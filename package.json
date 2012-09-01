@@ -1,0 +1,46 @@
+{
+  "name" : "grunt-jasmine-node",
+  "description" : "Grunt task for running jasmine-node",
+  "version" : "0.0.1",
+  "homepage" : "https://github.com/s9tpepper/grunt-jasmine-node",
+  "author" : {
+    "name" : "Omar Gonzalez",
+    "email" : "s9tpepper@apache.org",
+    "url" : "http://omar.gy"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/s9tpepper/grunt-jasmine-node.git"
+  },
+  "bugs" : {
+    "url" : "https://github.com/s9tpepper/grunt-jasmine-node/issues"
+  },
+  "licenses" : [
+    {
+      "type" : "MIT",
+      "url" : "https://github.com/s9tpepper/grunt-jasmine-node/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main" : "grunt.js",
+  "bin" : "bin/grunt-jasmine-node",
+  "engines" : {
+    "node" : "*"
+  },
+  "scripts" : {
+  },
+  "dependencies" : {
+  },
+  "devDependencies" : {
+    "grunt" : "~0.3.9",
+    "jasmine-node": "*"
+  },
+  "keywords" : [
+    "gruntplugin",
+    "grunt",
+    "plugins",
+    "builds",
+    "ci",
+    "jasmine",
+    "jasmine-node"
+  ]
+}
