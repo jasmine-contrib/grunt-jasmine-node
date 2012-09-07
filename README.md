@@ -10,7 +10,7 @@ Then add this line to your project's `grunt.js` grunt file:
 ```javascript
 grunt.initConfig({
   jasmine_node: {
-    spec: "./spec",
+    specFolderName: "./spec",
     projectRoot: ".",
     requirejs: false,
     forceExit: true,
