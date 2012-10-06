@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 
       var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
       var source          = grunt.config("jasmine_node.source") || "src";
-      var specFolderName  = grunt.config("jasmine_node.specFolderName") || "spec";
+      var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
       var isVerbose       = grunt.config("jasmine_node.verbose") || true;
       var showColors      = grunt.config("jasmine_node.colors") || true;
       var teamcity        = grunt.config("jasmine_node.teamcity") || false;
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
-      var regExpSpec = new RegExp(match + (matchall ? "" : specFolderName + "\\.") + "(" + extensions + ")$", 'i');
+      var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
       var onComplete = function(runner, log) {
         var exitCode;
         util.print('\n');
