@@ -4,6 +4,7 @@ module.exports = function (grunt) {
       var jasmine = require('jasmine-node');
       var util;
       var Path = require('path');
+      var _ = grunt.utils._;
 
       try {
           util = require('util');
@@ -14,8 +15,6 @@ module.exports = function (grunt) {
       var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
       var source          = grunt.config("jasmine_node.source") || "src";
       var specFolderName  = grunt.config("jasmine_node.specFolderName") || "spec";
-      var isVerbose       = grunt.config("jasmine_node.verbose") || true;
-      var showColors      = grunt.config("jasmine_node.colors") || true;
       var teamcity        = grunt.config("jasmine_node.teamcity") || false;
       var useRequireJs    = grunt.config("jasmine_node.requirejs") || false;
       var extensions      = grunt.config("jasmine_node.extensions") || "js";
@@ -24,6 +23,16 @@ module.exports = function (grunt) {
       var autotest        = grunt.config("jasmine_node.autotest") || false;
       var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
       var forceExit       = grunt.config("jasmine_node.forceExit") || false;
+      
+      var isVerbose       = grunt.config("jasmine_node.verbose");
+      var showColors      = grunt.config("jasmine_node.colors");
+      
+      if (_.isUndefined(isVerbose)) {
+        isVerbose = true;
+      }
+      if (_.isUndefined(showColors)) {
+        showColors = true;
+      }
 
       var junitreport = {
           report: false,
