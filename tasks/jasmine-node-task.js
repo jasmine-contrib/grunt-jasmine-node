@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
-
+    'use strict';
+    
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
@@ -30,6 +31,7 @@ module.exports = function (grunt) {
       if (_.isUndefined(isVerbose)) {
         isVerbose = true;
       }
+      
       if (_.isUndefined(showColors)) {
         showColors = true;
       }
