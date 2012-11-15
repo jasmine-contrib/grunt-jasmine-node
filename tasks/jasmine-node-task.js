@@ -4,8 +4,10 @@ module.exports = function (grunt) {
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
+      // TODO: ditch this when grunt v0.4 is released
+      grunt.util = grunt.util || grunt.utils;
       var Path = require('path');
-      var _ = grunt.utils._;
+      var _ = grunt.util._;
 
       try {
           util = require('util');
