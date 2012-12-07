@@ -29,11 +29,11 @@
   "scripts" : {
   },
   "dependencies" : {
-    "jasmine-node": "*"
+    "jasmine-node": ">= 1.0.28"
   },
   "devDependencies" : {
     "grunt" : "~0.3.9",
-    "jasmine-node": "*"
+    "jasmine-node": ">= 1.0.28"
   },
   "keywords" : [
     "gruntplugin",
