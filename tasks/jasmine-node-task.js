@@ -66,16 +66,20 @@ module.exports = function (grunt) {
 
         done();
       };
+      var options = {
+        specFolder: projectRoot,
+        onComplete: onComplete,
+        isVerbose: isVerbose,
+        showColors: showColors,
+        teamcity: teamcity,
+        useRequireJS: useRequireJs,
+        regExpSpec: regExpSpec,
+        junitreport: jUnit
+      };
+
 
       try {
-        jasmine.executeSpecsInFolder(projectRoot,
-          onComplete,
-          isVerbose,
-          showColors,
-          teamcity,
-          useRequireJs,
-          regExpSpec,
-          jUnit);
+        jasmine.executeSpecsInFolder(options);
       }
       catch (e) {
         console.log(e);
