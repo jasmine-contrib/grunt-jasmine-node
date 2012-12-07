@@ -67,18 +67,33 @@ module.exports = function (grunt) {
         done();
       };
 
+      var options = {
+        specFolder:   projectRoot,
+        onComplete:   onComplete,
+        isVerbose:    isVerbose,
+        showColors:   showColors,
+        teamcity:     teamcity,
+        useRequireJs: useRequireJs,
+        regExpSpec:   regExpSpec,
+        junitreport:  junitreport
+      };
+
+      // order is preserved in node.js
+      var legacyArguments = Object.keys(options).map(function(key) {
+        return options[key];
+      });
+
       try {
-        jasmine.executeSpecsInFolder(projectRoot,
-          onComplete,
-          isVerbose,
-          showColors,
-          teamcity,
-          useRequireJs,
-          regExpSpec,
-          jUnit);
+        // for jasmine-node@1.0.27 individual arguments need to be passed
+        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
       }
       catch (e) {
-        console.log(e);
+        try {
+          // since jasmine-node@1.0.28 an options object need to be passed
+          jasmine.executeSpecsInFolder(options);
+        } catch (e) {
+          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
+        }
       }
     });
 };
