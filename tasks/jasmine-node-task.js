@@ -75,7 +75,7 @@ module.exports = function (grunt) {
         teamcity:     teamcity,
         useRequireJs: useRequireJs,
         regExpSpec:   regExpSpec,
-        junitreport:  junitreport
+        junitreport:  jUnit
       };
 
       // order is preserved in node.js
