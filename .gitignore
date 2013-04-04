@@ -1,4 +1,28 @@
-.idea
-*.iml
+/node_modules
+debian
+
+# OSX
 .DS_Store
-node_modules
+._*
+.Spotlight-V100
+.Trashes
+
+# vim
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# SublimeText project files
+/*.sublime-project
+*.sublime-workspace
+/sftp-config.json
+
+# others
+.project
+*.tmp
+*~
+*.bak
+local.properties
+.settings
+.classpath
+.loadpath
