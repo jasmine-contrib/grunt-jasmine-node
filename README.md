@@ -47,6 +47,7 @@ default options are:
   includeStackTrace: true,
   useHelpers: false,
   teamcity: false,
+  coffee: false,
   jUnit: {
     report: false,
     savePath : "./reports/",

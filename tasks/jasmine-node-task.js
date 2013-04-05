@@ -21,6 +21,7 @@ module.exports = function (grunt) {
         includeStackTrace: true,
         useHelpers: false,
         teamcity: false,
+        coffee: false,
         jUnit: {
           report: false,
           savePath : "./reports/",
@@ -46,6 +47,7 @@ module.exports = function (grunt) {
             process.exit(exitCode);
           }
         }
+        jasmine.getGlobal().jasmine.currentEnv_ = undefined;
         done();
       };
 
@@ -64,7 +66,8 @@ module.exports = function (grunt) {
         useRequireJs: options.useRequireJs,
         regExpSpec: regExpSpec,
         junitreport: this.options.jUnit,
-        includeStackTrace: options.includeStackTrace
+        includeStackTrace: options.includeStackTrace,
+        coffee: options.coffee
       };
 
       try {
