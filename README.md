@@ -54,7 +54,7 @@ default options are:
     consolidate: true
   }
 }
-´´´
+```
 
 ## Bugs
 
