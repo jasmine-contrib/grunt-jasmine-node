@@ -36,7 +36,7 @@ grunt.registerTask('default', ['jasmine_node']);
 
 default options are:
 
-´´´javascript
+```javascript
 {
   match: '.',
   matchall: false,
