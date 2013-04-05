@@ -4,8 +4,6 @@ module.exports = function (grunt) {
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
-      var Path = require('path');
-      var _ = grunt.util._;
 
       try {
           util = require('util');
@@ -13,42 +11,29 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var projectRoot     = this.projectRoot || ".";
-      var source          = this.source || "src";
-      var specNameMatcher = this.specNameMatcher || "spec";
-      var teamcity        = this.teamcity || false;
-      var useRequireJs    = this.requirejs || false;
-      var extensions      = this.extensions || "js";
-      var match           = this.match || ".";
-      var matchall        = this.matchall || false;
-      var autotest        = this.autotest || false;
-      var useHelpers      = this.useHelpers || false;
-      var forceExit       = this.forceExit || false;
-
-      var isVerbose       = this.verbose;
-      var showColors      = this.colors;
-
-      if (_.isUndefined(isVerbose)) {
-        isVerbose = true;
-      }
-
-      if (_.isUndefined(showColors)) {
-        showColors = true;
-      }
-
-      var junitreport = {
+      var options = this.options({
+        match: '.',
+        matchall: false,
+        specNameMatcher: 'spec',
+        helperNameMatcher: 'helpers',
+        extensions: 'js',
+        showColors: true,
+        includeStackTrace: true,
+        useHelpers: false,
+        teamcity: false,
+        jUnit: {
           report: false,
           savePath : "./reports/",
           useDotNotation: true,
           consolidate: true
-      };
-
-      var jUnit = this.jUnit || junitreport;
+        }
+      });
 
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
-      var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
+      var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
+
       var onComplete = function(runner, log) {
         var exitCode;
         util.print('\n');
@@ -57,41 +42,37 @@ module.exports = function (grunt) {
         } else {
           exitCode = 1;
 
-          if (forceExit) {
+          if (options.forceExit) {
             process.exit(exitCode);
           }
         }
-
         done();
       };
 
-      var options = {
-        specFolder:   projectRoot,
-        onComplete:   onComplete,
-        isVerbose:    isVerbose,
-        showColors:   showColors,
-        teamcity:     teamcity,
-        useRequireJs: useRequireJs,
-        regExpSpec:   regExpSpec,
-        junitreport:  jUnit
+      if (options.useHelpers) {
+        this.filesSrc.forEach(function(path){
+          jasmine.loadHelpersInFolder(path, new RegExp(options.helperNameMatcher + "?\\.(" + options.extensions + ")$", 'i'));
+        });
+      }
+
+      var jasmineOptions = {
+        specFolders: this.filesSrc,
+        onComplete: onComplete,
+        isVerbose: grunt.verbose,
+        showColors: options.showColors,
+        teamcity: options.teamcity,
+        useRequireJs: options.useRequireJs,
+        regExpSpec: regExpSpec,
+        junitreport: this.options.jUnit,
+        includeStackTrace: options.includeStackTrace
       };
 
-      // order is preserved in node.js
-      var legacyArguments = Object.keys(options).map(function(key) {
-        return options[key];
-      });
-
       try {
-        // for jasmine-node@1.0.27 individual arguments need to be passed
-        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
+        // since jasmine-node@1.0.28 an options object need to be passed
+        jasmine.executeSpecsInFolder(jasmineOptions);
+      } catch (e) {
+        console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
       }
-      catch (e) {
-        try {
-          // since jasmine-node@1.0.28 an options object need to be passed
-          jasmine.executeSpecsInFolder(options);
-        } catch (e) {
-          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-        }
-      }
+
     });
 };
