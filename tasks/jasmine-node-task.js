@@ -15,7 +15,7 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
+      var specFolders     = grunt.config("jasmine_node.specFolders") || [];
       var source          = grunt.config("jasmine_node.source") || "src";
       var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
       var teamcity        = grunt.config("jasmine_node.teamcity") || false;
@@ -29,6 +29,10 @@ module.exports = function (grunt) {
 
       var isVerbose       = grunt.config("jasmine_node.verbose");
       var showColors      = grunt.config("jasmine_node.colors");
+
+      if(grunt.config("jasmine_node.projectRoot")){
+        specFolders.push(grunt.config("jasmine_node.projectRoot"));
+      }
 
       if (_.isUndefined(isVerbose)) {
         isVerbose = true;
@@ -68,7 +72,7 @@ module.exports = function (grunt) {
       };
 
       var options = {
-        specFolder:   projectRoot,
+        specFolders:  specFolders,
         onComplete:   onComplete,
         isVerbose:    isVerbose,
         showColors:   showColors,
