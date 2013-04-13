@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
-
+      debugger;
       try {
           util = require('util');
       } catch(e) {
@@ -33,6 +33,10 @@ module.exports = function (grunt) {
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
+      if(options.coffee){
+        options.extensions = 'js|coffee|litcoffee';
+        require('coffee-script');     
+      }
       var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
 
       var onComplete = function(runner, log) {

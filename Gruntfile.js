@@ -24,8 +24,8 @@ module.exports = function (grunt) {
           forceExit: true,
           match: '.',
           matchall: false,
-          extensions: 'js',
           specNameMatcher: 'spec',
+          coffee: true,
           jUnit: {
             report: true,
             savePath : "./build/reports/jasmine/",
