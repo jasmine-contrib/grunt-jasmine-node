@@ -1,3 +1,5 @@
+"use strict";
+
 var Calculator = function Calculator() {
   return {
     add:function add(firstNum, secondNum) {
@@ -9,7 +11,7 @@ var Calculator = function Calculator() {
 describe("Calculator", function () {
   var calculator;
   beforeEach(function (){
-    calculator = Calculator();
+    calculator = new Calculator();
   });
 
   describe("add()", function () {
