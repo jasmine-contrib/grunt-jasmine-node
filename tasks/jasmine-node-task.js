@@ -4,7 +4,6 @@ module.exports = function (grunt) {
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
-      debugger;
       try {
           util = require('util');
       } catch(e) {
