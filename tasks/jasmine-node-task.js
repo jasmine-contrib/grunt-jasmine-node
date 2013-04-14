@@ -21,6 +21,7 @@ module.exports = function (grunt) {
         useHelpers: false,
         teamcity: false,
         coffee: false,
+        verbose: false,
         jUnit: {
           report: false,
           savePath : "./reports/",
@@ -63,12 +64,12 @@ module.exports = function (grunt) {
       var jasmineOptions = {
         specFolders: this.filesSrc,
         onComplete: onComplete,
-        isVerbose: grunt.verbose,
+        isVerbose: grunt.verbose?true:options.verbose,
         showColors: options.showColors,
         teamcity: options.teamcity,
         useRequireJs: options.useRequireJs,
         regExpSpec: regExpSpec,
-        junitreport: this.options.jUnit,
+        junitreport: options.jUnit,
         includeStackTrace: options.includeStackTrace,
         coffee: options.coffee
       };
