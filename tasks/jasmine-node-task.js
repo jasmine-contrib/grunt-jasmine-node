@@ -87,6 +87,11 @@ module.exports = function (grunt) {
         return options[key];
       });
 
+      if(useHelpers){
+        jasmine.loadHelpersInFolder(projectRoot,
+        new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
+      }
+
       try {
         // for jasmine-node@1.0.27 individual arguments need to be passed
         jasmine.executeSpecsInFolder.apply(this, legacyArguments);
