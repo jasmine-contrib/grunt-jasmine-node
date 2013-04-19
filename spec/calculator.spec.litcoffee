@@ -11,7 +11,7 @@ First a Calculator class is declared which defines the add method
 
 Before each test a new Calculator instance is created
 
-    describe 'Calculator', ->
+    describe 'Calculator litcoffee', ->
         calculator = {}
 
         beforeEach () ->
