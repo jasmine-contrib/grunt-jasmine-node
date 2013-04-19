@@ -24,7 +24,7 @@
   "main" : "grunt.js",
   "bin" : "bin/grunt-jasmine-node",
   "engines" : {
-    "node" : "*"
+    "node" : ">=0.8.0"
   },
   "scripts" : {
   },
@@ -32,8 +32,9 @@
     "jasmine-node": "*"
   },
   "devDependencies" : {
-    "grunt" : "~0.3.9",
-    "jasmine-node": "*"
+    "grunt" : "~0.4.1",
+    "jasmine-node": ">=1.4.0",
+    "grunt-contrib-jshint": "~0.1.1"
   },
   "keywords" : [
     "gruntplugin",

@@ -15,6 +15,7 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
+      var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
       var specFolders     = grunt.config("jasmine_node.specFolders") || [];
       var source          = grunt.config("jasmine_node.source") || "src";
       var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
@@ -26,12 +27,13 @@ module.exports = function (grunt) {
       var autotest        = grunt.config("jasmine_node.autotest") || false;
       var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
       var forceExit       = grunt.config("jasmine_node.forceExit") || false;
+      var useCoffee       = grunt.config("jasmine_node.useCoffee") || false;
 
       var isVerbose       = grunt.config("jasmine_node.verbose");
       var showColors      = grunt.config("jasmine_node.colors");
 
-      if(grunt.config("jasmine_node.projectRoot")){
-        specFolders.push(grunt.config("jasmine_node.projectRoot"));
+      if (projectRoot) {
+        specFolders.push(projectRoot);
       }
 
       if (_.isUndefined(isVerbose)) {
@@ -72,22 +74,28 @@ module.exports = function (grunt) {
       };
 
       var options = {
-        specFolders:  specFolders,
-        onComplete:   onComplete,
-        isVerbose:    isVerbose,
-        showColors:   showColors,
-        teamcity:     teamcity,
-        useRequireJs: useRequireJs,
-        regExpSpec:   regExpSpec,
-        junitreport:  jUnit
+        match:           match,
+        matchall:        matchall,
+        specNameMatcher: specNameMatcher,
+        extensions:      extensions,
+        specFolders:     specFolders,
+        onComplete:      onComplete,
+        isVerbose:       isVerbose,
+        showColors:      showColors,
+        teamcity:        teamcity,
+        useRequireJs:    useRequireJs,
+        coffee:          useCoffee,
+        regExpSpec:      regExpSpec,
+        junitreport:     jUnit
       };
+
 
       // order is preserved in node.js
       var legacyArguments = Object.keys(options).map(function(key) {
         return options[key];
       });
 
-      if(useHelpers){
+      if (useHelpers) {
         jasmine.loadHelpersInFolder(projectRoot,
         new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
       }
