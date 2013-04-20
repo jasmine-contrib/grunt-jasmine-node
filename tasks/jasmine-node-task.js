@@ -11,6 +11,8 @@ module.exports = function (grunt) {
       }
 
       var options = this.options({
+        specFolders: [],
+        projectRoot:'',
         match: '.',
         matchall: false,
         specNameMatcher: 'spec',
@@ -29,7 +31,10 @@ module.exports = function (grunt) {
           consolidate: true
         }
       });
-
+      options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
+      if (options.projectRoot) {
+        options.specFolders.push(options.projectRoot);
+      }
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
@@ -62,24 +67,24 @@ module.exports = function (grunt) {
       }
 
       var jasmineOptions = {
-        specFolders: this.filesSrc,
-        onComplete: onComplete,
+        specFolders: options.specFolders,
+        onComplete:   onComplete,
         isVerbose: grunt.verbose?true:options.verbose,
         showColors: options.showColors,
         teamcity: options.teamcity,
         useRequireJs: options.useRequireJs,
-        regExpSpec: regExpSpec,
+        regExpSpec:   regExpSpec,
         junitreport: options.jUnit,
         includeStackTrace: options.includeStackTrace,
         coffee: options.coffee
       };
 
-      try {
-        // since jasmine-node@1.0.28 an options object need to be passed
+        try {
+          // since jasmine-node@1.0.28 an options object need to be passed
         jasmine.executeSpecsInFolder(jasmineOptions);
-      } catch (e) {
-        console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-      }
+        } catch (e) {
+          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
+        }
 
     });
 };

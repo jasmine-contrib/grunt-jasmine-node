@@ -21,9 +21,12 @@ module.exports = function (grunt) {
       },
       jasmine_node: {
         options: {
+          specFolders:[],
+          projectRoot:'', 
           forceExit: true,
           match: '.',
           matchall: false,
+          extensions: 'js',
           specNameMatcher: 'spec',
           coffee: true,
           jUnit: {
@@ -33,7 +36,7 @@ module.exports = function (grunt) {
             consolidate: true
           }
         },
-        all: ['spec/']
+        all: ['spec/'] // will be merged with the specFolders option and the projectRoot
       }
     });
 

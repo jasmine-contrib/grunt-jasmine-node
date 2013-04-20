@@ -26,3 +26,6 @@ local.properties
 .settings
 .classpath
 .loadpath
+
+#junit reports
+/build/reports/jasmine/
