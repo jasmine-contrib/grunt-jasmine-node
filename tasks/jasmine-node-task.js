@@ -56,6 +56,10 @@ module.exports = function (grunt) {
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
+      if (useCoffee) {
+        extensions = 'js|coffee|litcoffee';
+      }
+
       var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
       var onComplete = function(runner, log) {
         var exitCode;
@@ -77,14 +81,12 @@ module.exports = function (grunt) {
         match:           match,
         matchall:        matchall,
         specNameMatcher: specNameMatcher,
-        extensions:      extensions,
         specFolders:     specFolders,
         onComplete:      onComplete,
         isVerbose:       isVerbose,
         showColors:      showColors,
         teamcity:        teamcity,
         useRequireJs:    useRequireJs,
-        coffee:          useCoffee,
         regExpSpec:      regExpSpec,
         junitreport:     jUnit
       };
