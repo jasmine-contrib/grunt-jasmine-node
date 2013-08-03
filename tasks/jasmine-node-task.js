@@ -28,6 +28,7 @@ module.exports = function (grunt) {
       var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
       var forceExit       = grunt.config("jasmine_node.forceExit") || false;
       var useCoffee       = grunt.config("jasmine_node.useCoffee") || false;
+      var growl           = grunt.config("jasmine_node.growl") || false;
 
       var isVerbose       = grunt.config("jasmine_node.verbose");
       var showColors      = grunt.config("jasmine_node.colors");
@@ -86,7 +87,8 @@ module.exports = function (grunt) {
         useRequireJs:    useRequireJs,
         coffee:          useCoffee,
         regExpSpec:      regExpSpec,
-        junitreport:     jUnit
+        junitreport:     jUnit,
+        growl:           growl
       };
 
 
