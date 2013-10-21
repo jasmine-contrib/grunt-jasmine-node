@@ -32,7 +32,7 @@ module.exports = function (grunt) {
       var isVerbose       = grunt.config("jasmine_node.verbose");
       var showColors      = grunt.config("jasmine_node.colors");
 
-      if (projectRoot) {
+      if (projectRoot && specFolders.length < 1) {
         specFolders.push(projectRoot);
       }
 
