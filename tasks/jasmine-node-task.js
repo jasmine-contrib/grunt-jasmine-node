@@ -70,7 +70,7 @@ module.exports = function (grunt) {
           }
         }
 
-        done();
+        done(exitCode === 0);
       };
 
       var options = {
