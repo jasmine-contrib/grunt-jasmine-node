@@ -6,7 +6,6 @@ module.exports = function (grunt) {
       var util;
       // TODO: ditch this when grunt v0.4 is released
       grunt.util = grunt.util || grunt.utils;
-      var Path = require('path');
       var _ = grunt.util._;
 
       try {
@@ -17,14 +16,12 @@ module.exports = function (grunt) {
 
       var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
       var specFolders     = grunt.config("jasmine_node.specFolders") || [];
-      var source          = grunt.config("jasmine_node.source") || "src";
       var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
       var teamcity        = grunt.config("jasmine_node.teamcity") || false;
       var useRequireJs    = grunt.config("jasmine_node.requirejs") || false;
       var extensions      = grunt.config("jasmine_node.extensions") || "js";
       var match           = grunt.config("jasmine_node.match") || ".";
       var matchall        = grunt.config("jasmine_node.matchall") || false;
-      var autotest        = grunt.config("jasmine_node.autotest") || false;
       var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
       var forceExit       = grunt.config("jasmine_node.forceExit") || false;
       var useCoffee       = grunt.config("jasmine_node.useCoffee") || false;
@@ -57,7 +54,7 @@ module.exports = function (grunt) {
       var done = this.async();
 
       var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
-      var onComplete = function(runner, log) {
+      var onComplete = function(runner) {
         var exitCode;
         util.print('\n');
         if (runner.results().failedCount === 0) {
