@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
     'use strict';
 
-    grunt.registerTask("jasmine_node", "Runs jasmine-node.", function() {
+    grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
       // TODO: ditch this when grunt v0.4 is released
@@ -14,31 +14,28 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var projectRoot     = grunt.config("jasmine_node.projectRoot") || ".";
-      var specFolders     = grunt.config("jasmine_node.specFolders") || [];
-      var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
-      var teamcity        = grunt.config("jasmine_node.teamcity") || false;
-      var useRequireJs    = grunt.config("jasmine_node.requirejs") || false;
-      var extensions      = grunt.config("jasmine_node.extensions") || "js";
-      var match           = grunt.config("jasmine_node.match") || ".";
-      var matchall        = grunt.config("jasmine_node.matchall") || false;
-      var useHelpers      = grunt.config("jasmine_node.useHelpers") || false;
-      var forceExit       = grunt.config("jasmine_node.forceExit") || false;
-      var useCoffee       = grunt.config("jasmine_node.useCoffee") || false;
+      var options = this.options({
+        projectRoot: ".",
+        specFolders: [],
+        specNameMatcher: "spec",
+        teamcity: false,
+        useRequireJs: false,
+        extensions: "js",
+        match: ".",
+        matchall: false,
+        useHelpers: false,
+        forceExit: false,
+        useCoffee: false,
+        isVerbose: true,
+        showColors: true
+      });
 
-      var isVerbose       = grunt.config("jasmine_node.verbose");
-      var showColors      = grunt.config("jasmine_node.colors");
+      var data = this.data;
+      //merge options onto data, with data taking precedence
+      data = _.merge(options, data);
 
-      if (projectRoot) {
-        specFolders.push(projectRoot);
-      }
-
-      if (_.isUndefined(isVerbose)) {
-        isVerbose = true;
-      }
-
-      if (_.isUndefined(showColors)) {
-        showColors = true;
+      if (data.projectRoot) {
+        data.specFolders.push(data.projectRoot);
       }
 
       var junitreport = {
@@ -48,13 +45,13 @@ module.exports = function (grunt) {
           consolidate: true
       };
 
-      var jUnit = grunt.config("jasmine_node.jUnit") || junitreport;
+      options.junitreport = options.jUnit || junitreport;
 
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
-      var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
-      var onComplete = function(runner) {
+      options.regExpSpec = new RegExp(data.match + (data.matchall ? "" : data.specNameMatcher + "\\.") + "(" + data.extensions + ")$", 'i');
+      options.onComplete = function(runner) {
         var exitCode;
         util.print('\n');
         if (runner.results().failedCount === 0) {
@@ -62,39 +59,24 @@ module.exports = function (grunt) {
         } else {
           exitCode = 1;
 
-          if (forceExit) {
+          if (data.forceExit) {
             process.exit(exitCode);
           }
         }
 
+        //clear down any global state from test execution
+        global.jasmine.currentEnv_ = new jasmine.Env();
         done();
       };
-
-      var options = {
-        match:           match,
-        matchall:        matchall,
-        specNameMatcher: specNameMatcher,
-        extensions:      extensions,
-        specFolders:     specFolders,
-        onComplete:      onComplete,
-        isVerbose:       isVerbose,
-        showColors:      showColors,
-        teamcity:        teamcity,
-        useRequireJs:    useRequireJs,
-        coffee:          useCoffee,
-        regExpSpec:      regExpSpec,
-        junitreport:     jUnit
-      };
-
 
       // order is preserved in node.js
       var legacyArguments = Object.keys(options).map(function(key) {
         return options[key];
       });
 
-      if (useHelpers) {
-        jasmine.loadHelpersInFolder(projectRoot,
-        new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
+      if (data.useHelpers) {
+        jasmine.loadHelpersInFolder(data.projectRoot,
+        new RegExp("helpers?\\.(" + data.extensions + ")$", 'i'));
       }
 
       try {
