@@ -32,7 +32,7 @@ module.exports = function (grunt) {
 
       var data = this.data;
       //merge options onto data, with data taking precedence
-      data = _.merge(options, data);
+      data = _.extend(options, data);
 
       if (data.projectRoot) {
         data.specFolders.push(data.projectRoot);
