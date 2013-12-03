@@ -14,6 +14,7 @@ grunt.initConfig({
     projectRoot: ".",
     requirejs: false,
     forceExit: true,
+    captureExceptions: false,
     jUnit: {
       report: false,
       savePath : "./build/reports/jasmine/",
