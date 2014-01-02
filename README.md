@@ -10,15 +10,17 @@ Then add this line to your project's `grunt.js` grunt file:
 ```javascript
 grunt.initConfig({
   jasmine_node: {
-    specNameMatcher: "./spec", // load only specs containing specNameMatcher
-    projectRoot: ".",
-    requirejs: false,
-    forceExit: true,
-    jUnit: {
-      report: false,
-      savePath : "./build/reports/jasmine/",
-      useDotNotation: true,
-      consolidate: true
+    all: {
+      specNameMatcher: "./spec", // load only specs containing specNameMatcher
+      projectRoot: ".",
+      requirejs: false,
+      forceExit: true,
+      jUnit: {
+        report: false,
+        savePath : "./build/reports/jasmine/",
+        useDotNotation: true,
+        consolidate: true
+      }
     }
   }
 });
@@ -27,6 +29,47 @@ grunt.loadNpmTasks('grunt-jasmine-node');
 
 grunt.registerTask('default', 'jasmine_node');
 ```
+
+## Sharing Configs
+
+If you have multiple targets, it may be helpful to share common configuration settings between them. This is supported by using the `options` property:
+
+```javascript
+grunt.initConfig({
+  jasmine_node: {
+    options: {
+      forceExit: false,
+      specNameMatcher: './spec',
+    },
+    dev: {
+      jUnit: {
+        report: false
+      }
+    },
+    continuous: {
+      forceExit: true,
+      jUnit: {
+        report: true,
+        savePath : "./build/reports/jasmine/",
+      }
+    }
+  }
+});
+
+```
+In this example the `continuous` and `dev` targets will both use the `specNameMatcher` specified in the `options`. The `continuous` target will override the `forceExit` setting to `true`, whereas the `dev` target will inherit the `false` setting from `options`.
+
+## Running tests
+
+If you have a single target, run: 
+
+`$ grunt jasmine_node`
+
+If you have multiple targets, you can run the desired target by running with the appropriate `:flag`. For example, with two targets, dev and continuous, running the dev target is as simple as:
+
+`$ grunt jasmine_node:dev`
+
+Additionally, running `$ grunt jasmine_node` when multiple targets are configured will run each target in turn.
 
 ## Bugs
 
