@@ -29,3 +29,8 @@ local.properties
 
 #junit reports
 /build/reports/jasmine/
+
+
+#IntelliJ
+*.iml
+.idea
