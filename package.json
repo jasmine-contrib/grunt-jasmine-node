@@ -26,8 +26,6 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "scripts" : {
-  },
   "scripts": {},
   "dependencies": {
     "jasmine-node": "~1.7.0",
