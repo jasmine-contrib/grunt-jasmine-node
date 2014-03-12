@@ -29,7 +29,8 @@ module.exports = function (grunt) {
           savePath : "./reports/",
           useDotNotation: true,
           consolidate: true
-        }
+        },
+        growl: false
       });
       options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
       if (options.projectRoot) {
@@ -76,15 +77,27 @@ module.exports = function (grunt) {
         regExpSpec:   regExpSpec,
         junitreport: options.jUnit,
         includeStackTrace: options.includeStackTrace,
-        coffee: options.coffee
+        coffee: options.coffee,
+        growl: options.growl
       };
 
+      try {
+        // for jasmine-node@1.0.27 individual arguments need to be passed
+        // order is preserved in node.js
+        var legacyArguments = Object.keys(options).map(function(key) {
+          return options[key];
+        });
+
+        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
+      }
+      catch (e) {
         try {
           // since jasmine-node@1.0.28 an options object need to be passed
         jasmine.executeSpecsInFolder(jasmineOptions);
         } catch (e) {
           console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
         }
+      }
 
     });
 };

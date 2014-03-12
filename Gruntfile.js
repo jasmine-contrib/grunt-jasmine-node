@@ -34,7 +34,8 @@ module.exports = function (grunt) {
             savePath : "./build/reports/jasmine/",
             useDotNotation: true,
             consolidate: true
-          }
+          },
+          growl: true
         },
         all: ['spec/'] // will be merged with the specFolders option and the projectRoot
       }
