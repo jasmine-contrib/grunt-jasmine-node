@@ -58,7 +58,7 @@ module.exports = function (grunt) {
           }
         }
         jasmine.getGlobal().jasmine.currentEnv_ = undefined;
-        done();
+        done(exitCode === 0);
       };
 
       if (options.useHelpers) {
