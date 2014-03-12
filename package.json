@@ -8,35 +8,36 @@
     "email" : "s9tpepper@apache.org",
     "url" : "http://omar.gy"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "git://github.com/s9tpepper/grunt-jasmine-node.git"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/s9tpepper/grunt-jasmine-node.git"
   },
-  "bugs" : {
-    "url" : "https://github.com/s9tpepper/grunt-jasmine-node/issues"
+  "bugs": {
+    "url": "https://github.com/s9tpepper/grunt-jasmine-node/issues"
   },
-  "licenses" : [
+  "licenses": [
     {
-      "type" : "MIT",
-      "url" : "https://github.com/s9tpepper/grunt-jasmine-node/blob/master/LICENSE-MIT"
+      "type": "MIT",
+      "url": "https://github.com/s9tpepper/grunt-jasmine-node/blob/master/LICENSE-MIT"
     }
   ],
-  "main" : "grunt.js",
-  "bin" : "bin/grunt-jasmine-node",
-  "engines" : {
-    "node" : ">=0.8.0"
+  "main": "grunt.js",
+  "bin": "bin/grunt-jasmine-node",
+  "engines": {
+    "node": ">=0.8.0"
   },
   "scripts" : {
   },
-  "dependencies" : {
-    "jasmine-node": "*"
+  "scripts": {},
+  "dependencies": {
+    "jasmine-node": "~1.7.0",
+    "coffee-script": "~1.6.2"
   },
-  "devDependencies" : {
-    "grunt" : "~0.4.1",
-    "jasmine-node": ">=1.4.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.1.1"
   },
-  "keywords" : [
+  "keywords": [
     "gruntplugin",
     "grunt",
     "plugins",
