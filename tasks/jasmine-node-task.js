@@ -12,15 +12,15 @@ module.exports = function (grunt) {
 
       var options = this.options({
         specFolders: [],
+        watchFolders: [],
         projectRoot:'',
+        forceExit: false,
         match: '.',
         matchall: false,
         specNameMatcher: 'spec',
-        helperNameMatcher: 'helpers',
         extensions: 'js',
         showColors: true,
         includeStackTrace: true,
-        useHelpers: false,
         teamcity: false,
         coffee: false,
         verbose: false,
@@ -41,40 +41,35 @@ module.exports = function (grunt) {
 
       if(options.coffee){
         options.extensions = 'js|coffee|litcoffee';
-        require('coffee-script');     
+        require('coffee-script');
       }
-      var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
+
+      var match = options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$";
 
       var onComplete = function(runner, log) {
         var exitCode;
         util.print('\n');
-        if (runner.results().failedCount === 0) {
-          exitCode = 0;
-        } else {
+        if (global.jasmineResult.fail) {
           exitCode = 1;
+        } else {
+          exitCode = 0;
 
           if (options.forceExit) {
             process.exit(exitCode);
           }
         }
-        jasmine.getGlobal().jasmine.currentEnv_ = undefined;
+        global.jasmine.currentEnv_ = undefined;
         done(exitCode === 0);
       };
 
-      if (options.useHelpers) {
-        this.filesSrc.forEach(function(path){
-          jasmine.loadHelpersInFolder(path, new RegExp(options.helperNameMatcher + "?\\.(" + options.extensions + ")$", 'i'));
-        });
-      }
-
       var jasmineOptions = {
         specFolders: options.specFolders,
+        watchFolders: options.watchFolders,
         onComplete:   onComplete,
-        isVerbose: grunt.verbose?true:options.verbose,
+        isVerbose: grunt.verbose ? true : options.verbose,
         showColors: options.showColors,
         teamcity: options.teamcity,
-        useRequireJs: options.useRequireJs,
-        regExpSpec:   regExpSpec,
+        match: match,
         junitreport: options.jUnit,
         includeStackTrace: options.includeStackTrace,
         coffee: options.coffee,
@@ -82,22 +77,10 @@ module.exports = function (grunt) {
       };
 
       try {
-        // for jasmine-node@1.0.27 individual arguments need to be passed
-        // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function(key) {
-          return options[key];
-        });
-
-        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
-      }
-      catch (e) {
-        try {
-          // since jasmine-node@1.0.28 an options object need to be passed
-        jasmine.executeSpecsInFolder(jasmineOptions);
+          jasmine.run(jasmineOptions);
         } catch (e) {
-          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
+          console.log('Failed to execute "jasmine.run": ' + e.stack);
         }
-      }
 
     });
 };

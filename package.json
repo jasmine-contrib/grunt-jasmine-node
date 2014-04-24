@@ -1,7 +1,7 @@
 {
   "name" : "grunt-jasmine-node",
   "description" : "Grunt task for running jasmine-node",
-  "version" : "0.2.1",
+  "version" : "0.3.0",
   "homepage" : "https://github.com/jasmine-contrib/grunt-jasmine-node",
   "author" : {
     "name" : "Omar Gonzalez",
@@ -24,16 +24,16 @@
   "main": "grunt.js",
   "bin": "bin/grunt-jasmine-node",
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "scripts": {},
   "dependencies": {
-    "jasmine-node": "~1.7.0",
-    "coffee-script": "~1.6.2"
+    "jasmine-node": "~2.0.0",
+    "coffee-script": "~1.7.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.1.1"
+    "grunt": "~0.4.4",
+    "grunt-contrib-jshint": "~0.10.0"
   },
   "keywords": [
     "gruntplugin",
