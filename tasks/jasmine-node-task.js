@@ -66,7 +66,7 @@ module.exports = function (grunt) {
         specFolders: options.specFolders,
         watchFolders: options.watchFolders,
         onComplete:   onComplete,
-        isVerbose: grunt.verbose ? true : options.verbose,
+        verbose: grunt.verbose ? true : options.verbose,
         showColors: options.showColors,
         teamcity: options.teamcity,
         match: match,
