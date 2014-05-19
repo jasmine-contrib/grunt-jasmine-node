@@ -20,13 +20,8 @@ module.exports = function (grunt) {
       },
       jasmine_node: {
         options: {
-          specFolders:[],
           projectRoot:'',
           forceExit: true,
-          match: '.',
-          matchall: false,
-          extensions: 'js',
-          specNameMatcher: 'spec',
           coffee: true,
           jUnit: {
             report: true,

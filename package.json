@@ -1,12 +1,12 @@
 {
-  "name" : "grunt-jasmine-node",
-  "description" : "Grunt task for running jasmine-node",
-  "version" : "0.3.0",
-  "homepage" : "https://github.com/jasmine-contrib/grunt-jasmine-node",
-  "author" : {
-    "name" : "Omar Gonzalez",
-    "email" : "s9tpepper@apache.org",
-    "url" : "http://s9tpepper.com"
+  "name": "grunt-jasmine-node",
+  "description": "Grunt task for running jasmine-node",
+  "version": "0.3.0",
+  "homepage": "https://github.com/jasmine-contrib/grunt-jasmine-node",
+  "author": {
+    "name": "Omar Gonzalez",
+    "email": "s9tpepper@apache.org",
+    "url": "http://s9tpepper.com"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "jasmine-node": "~2.0.0",
-    "coffee-script": "~1.7.1"
+    "jasmine-node": "~2.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
