@@ -18,7 +18,9 @@ module.exports = function(grunt) {
     // Tell grunt this task is asynchronous.
     var done = this.async();
 
-    options.verbose = grunt.verbose ? true : options.verbose;
+    // Check if we should use verbose mode
+    // Embedded option should always win over grunt verbose flag
+    options.verbose = !!options.verbose || grunt.option('verbose');
 
     if (options.coffee) {
       options.extensions += "|coffee|litcoffee";
