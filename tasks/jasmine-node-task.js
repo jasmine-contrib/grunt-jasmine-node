@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 
       var onComplete = function(runner, log) {
         var exitCode;
-        util.print('\n');
+        console.log('\n');
         if (runner.results().failedCount === 0) {
           exitCode = 0;
         } else {
@@ -82,21 +82,9 @@ module.exports = function (grunt) {
       };
 
       try {
-        // for jasmine-node@1.0.27 individual arguments need to be passed
-        // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function(key) {
-          return options[key];
-        });
-
-        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
-      }
-      catch (e) {
-        try {
-          // since jasmine-node@1.0.28 an options object need to be passed
-        jasmine.executeSpecsInFolder(jasmineOptions);
-        } catch (e) {
+          jasmine.executeSpecsInFolder(jasmineOptions);
+      } catch (e) {
           console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-        }
       }
 
     });
