@@ -42,5 +42,10 @@
     "ci",
     "jasmine",
     "jasmine-node"
+  ],
+  "files": [
+    "bin",
+    "tasks",
+    "LICENSE-MIT"
   ]
 }
