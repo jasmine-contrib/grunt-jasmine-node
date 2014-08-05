@@ -1,7 +1,7 @@
 {
   "name": "grunt-jasmine-node",
   "description": "Grunt task for running jasmine-node",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "homepage": "https://github.com/jasmine-contrib/grunt-jasmine-node",
   "author": {
     "name": "Omar Gonzalez",
@@ -28,7 +28,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "jasmine-node": "~2.0.0"
+    "jasmine-node": "2.0.0-beta4"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
