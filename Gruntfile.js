@@ -25,11 +25,14 @@ module.exports = function (grunt) {
           projectRoot:'', 
           forceExit: true,
           match: '.',
+          includeStackTrace: false,
           matchall: false,
           extensions: 'js',
           specNameMatcher: 'spec',
           asyncTimeout: 30000,
           coffee: true,
+          verbose: false,
+          consoleReporter: true,
           jUnit: {
             report: true,
             savePath : "./build/reports/jasmine/",
@@ -38,7 +41,21 @@ module.exports = function (grunt) {
           },
           growl: true
         },
-        all: ['spec/'] // will be merged with the specFolders option and the projectRoot
+        all: {
+          src: ['spec/**/*', 'test/**/*']
+        },
+        src: {
+          src: ['spec/', 'test/']
+        },
+        filesArray: {
+          files: [
+             {
+               cwd: 'spec/',
+               expand: true,
+               src: ['**/*']
+             }
+          ]
+        }
       }
     });
 
