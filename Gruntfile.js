@@ -28,6 +28,7 @@ module.exports = function (grunt) {
           matchall: false,
           extensions: 'js',
           specNameMatcher: 'spec',
+          asyncTimeout: 30000,
           coffee: true,
           jUnit: {
             report: true,
