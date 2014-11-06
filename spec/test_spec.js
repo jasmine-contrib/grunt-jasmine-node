@@ -26,3 +26,20 @@ describe("Calculator", function () {
     });
   });
 });
+
+
+describe("Super Async", function () {
+  var calculator;
+  beforeEach(function (){
+    calculator = 1 + 1;
+  });
+
+  describe("async add)", function () {
+    it("adds two numbers together", function (done) {
+      setTimeout(function() {
+        expect(calculator).toEqual(2);
+        done();
+      }, 10000)
+    });
+  });
+});

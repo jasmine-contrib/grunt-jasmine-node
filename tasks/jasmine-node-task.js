@@ -36,6 +36,10 @@ module.exports = function (grunt) {
       if (options.projectRoot) {
         options.specFolders.push(options.projectRoot);
       }
+
+      if (options.asyncTimeout) {
+        jasmine.getEnv().defaultTimeoutInterval = options.asyncTimeout;
+      }
       // Tell grunt this task is asynchronous.
       var done = this.async();
 
@@ -82,21 +86,10 @@ module.exports = function (grunt) {
       };
 
       try {
-        // for jasmine-node@1.0.27 individual arguments need to be passed
-        // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function(key) {
-          return options[key];
-        });
-
-        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
-      }
-      catch (e) {
-        try {
-          // since jasmine-node@1.0.28 an options object need to be passed
+        // since jasmine-node@1.0.28 an options object need to be passed
         jasmine.executeSpecsInFolder(jasmineOptions);
-        } catch (e) {
-          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-        }
+      } catch (e) {
+        console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
       }
 
     });
