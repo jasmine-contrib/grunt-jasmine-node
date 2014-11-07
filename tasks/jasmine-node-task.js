@@ -40,6 +40,8 @@ module.exports = function (grunt) {
         Object.keys(options.globals).forEach(function(key) {
           global[key] = options.globals[key];
         });
+
+        delete options.globals;
       }
 
       function processPaths(fileName, specFolder, specFolders) {

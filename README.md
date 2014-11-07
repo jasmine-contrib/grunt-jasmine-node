@@ -1,6 +1,6 @@
 # grunt-jasmine-node
 
-A grunt.js task to run your jasmine feature suite using jasmine-node.
+A fork of the grunt.js task to run your jasmine feature suite using jasmine-node.
 
 ## Getting Started
 Install this grunt plugin next to your project's grunt.js gruntfile with: `npm install grunt-jasmine-node`
@@ -11,19 +11,23 @@ Then add this line to your project's `Gruntfile.js` grunt file:
 grunt.initConfig({
   jasmine_node: {
     options: {
-      forceExit: true,
-      match: '.',
+      showColors: true,
+      includeStackTrace: false,
+      projectRoot:'', 
+      forceExit: false,
       matchall: false,
-      extensions: 'js',
-      specNameMatcher: 'spec',
-      jUnit: {
-        report: true,
-        savePath : "./build/reports/jasmine/",
-        useDotNotation: true,
-        consolidate: true
+      coffee: false,
+      growl: false,
+      asyncTimeout: 30000,
+      verbose: false,
+      consoleReporter: true,
+      globals: {
+        linkPath: '<%= grunt.config.get("link_path") %>'
       }
     },
-    all: ['spec/']
+    all: {
+      src: ['spec/**/*', 'test/**/*']
+    }
   }
 });
 
@@ -38,6 +42,7 @@ default options are:
 
 ```javascript
 {
+  projectRoot:'',
   match: '.',
   matchall: false,
   specNameMatcher: 'spec',
@@ -48,23 +53,19 @@ default options are:
   useHelpers: false,
   teamcity: false,
   coffee: false,
+  verbose: false,
   jUnit: {
     report: false,
     savePath : "./reports/",
     useDotNotation: true,
     consolidate: true
-  }
+  },
+  growl: false
 }
 ```
 
-## Bugs
+## Differences
 
-Help us squash them by submitting an issue that describes how you encountered it; please be as specific as possible including operating system, node, grunt, and grunt-jasmine-node versions.
+The current version of `grunt-jamsine-node` seems to be unmaintained and unreliable for certain options.  Also, I have specific project requirements that require easy specification of Node globals from the Gruntfile and also easily setting async test timeouts and logging testing info to the console.
 
-## Release History
 
-see [GitHub Repository](/s9tpepper/grunt-jasmine-node).
-
-## License
-Copyright (c) 2012 "s9tpepper" Omar Gonzalez & contributors.
-Licensed under the MIT license.
