@@ -1,3 +1,6 @@
+var path = require('path');
+
+
 module.exports = function (grunt) {
     'use strict';
 
@@ -32,9 +35,55 @@ module.exports = function (grunt) {
         },
         growl: false
       });
-      options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
+
+      if(options.globals) {
+        Object.keys(options.globals).forEach(function(key) {
+          global[key] = options.globals[key];
+        });
+
+        delete options.globals;
+      }
+
+      function processPaths(fileName, specFolder, specFolders) {
+         if(specFolder[0] === '/') {
+          specFolder = specFolder.subst(1);
+         }
+
+         specFolder = path.join(process.cwd(), '/', specFolder);
+         
+         if(specFolders.indexOf(specFolder) === -1) {
+           specFolders.push(specFolder);
+         }
+
+         if(/\.coffee/.test(fileName) && !options.coffee) {
+           options.coffee = true;
+         } 
+      }
+      
+      var filePaths;
+
+      if(this.filesSrc.length > 0){
+        filePaths = this.filesSrc;
+      } else {
+        filePaths = this.files[0].orig.src;
+      }
+      
+      filePaths.forEach(function(file){
+        var lastSlashIndex = file.lastIndexOf('/');
+        
+        var fileName = file.substr(lastSlashIndex + 1);
+        var specFolder = file.replace(fileName, '');
+        
+        processPaths(fileName, specFolder, options.specFolders);
+      });
+
       if (options.projectRoot) {
         options.specFolders.push(options.projectRoot);
+      }
+
+      if (options.asyncTimeout) {
+        jasmine.getEnv().defaultTimeoutInterval = options.asyncTimeout;
+        delete options.asyncTimeout;
       }
       // Tell grunt this task is asynchronous.
       var done = this.async();
@@ -67,10 +116,23 @@ module.exports = function (grunt) {
         });
       }
 
+      if(options.consoleReporter) {
+        var consoleReporter = new jasmine.ConsoleReporter({
+          showColors: true,
+          print: function() {
+            console.log.apply(console, arguments);
+          }
+        });
+
+        jasmine.getEnv().addReporter(consoleReporter);
+
+        delete options.consoleReporter;
+      }
+
       var jasmineOptions = {
         specFolders: options.specFolders,
         onComplete:   onComplete,
-        isVerbose: grunt.verbose?true:options.verbose,
+        isVerbose: options.verbose ? options.verbose : false,
         showColors: options.showColors,
         teamcity: options.teamcity,
         useRequireJs: options.useRequireJs,
@@ -82,21 +144,10 @@ module.exports = function (grunt) {
       };
 
       try {
-        // for jasmine-node@1.0.27 individual arguments need to be passed
-        // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function(key) {
-          return options[key];
-        });
-
-        jasmine.executeSpecsInFolder.apply(this, legacyArguments);
-      }
-      catch (e) {
-        try {
-          // since jasmine-node@1.0.28 an options object need to be passed
+        // since jasmine-node@1.0.28 an options object need to be passed
         jasmine.executeSpecsInFolder(jasmineOptions);
-        } catch (e) {
-          console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-        }
+      } catch (e) {
+        console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
       }
 
     });

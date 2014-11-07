@@ -21,23 +21,35 @@ module.exports = function (grunt) {
       },
       jasmine_node: {
         options: {
-          specFolders:[],
+          showColors: true,
+          includeStackTrace: false,
           projectRoot:'', 
-          forceExit: true,
-          match: '.',
+          forceExit: false,
           matchall: false,
-          extensions: 'js',
-          specNameMatcher: 'spec',
-          coffee: true,
-          jUnit: {
-            report: true,
-            savePath : "./build/reports/jasmine/",
-            useDotNotation: true,
-            consolidate: true
-          },
-          growl: true
+          coffee: false,
+          growl: false,
+          asyncTimeout: 30000,
+          verbose: false,
+          consoleReporter: true,
+          globals: {
+            linkPath: '<%= grunt.config.get("link_path") %>'
+          }
         },
-        all: ['spec/'] // will be merged with the specFolders option and the projectRoot
+        all: {
+          src: ['spec/**/*', 'test/**/*']
+        },
+        src: {
+          src: ['spec/', 'test/']
+        },
+        filesArray: {
+          files: [
+             {
+               cwd: 'spec/',
+               expand: true,
+               src: ['**/*']
+             }
+          ]
+        }
       }
     });
 
