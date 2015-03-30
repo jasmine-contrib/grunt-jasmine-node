@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     'use strict';
-
+    
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
@@ -10,41 +10,37 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var options = this.options({
-        specFolders: [],
-        projectRoot:'',
-        match: '.',
-        matchall: false,
-        specNameMatcher: 'spec',
-        helperNameMatcher: 'helpers',
-        extensions: 'js',
-        showColors: true,
-        includeStackTrace: true,
-        useHelpers: false,
-        teamcity: false,
-        coffee: false,
-        verbose: false,
-        jUnit: {
+      var projectRoot       = grunt.config("jasmine_node.projectRoot") || ".";
+      var specFolders       = grunt.config("jasmine_node.specFolders") || [];
+      var source            = grunt.config("jasmine_node.source") || "src";
+      var specNameMatcher   = grunt.config("jasmine_node.specNameMatcher") || "spec";
+      var teamcity          = grunt.config("jasmine_node.teamcity") || false;
+      var useRequireJs      = grunt.config("jasmine_node.requirejs") || false;
+      var extensions        = grunt.config("jasmine_node.extensions") || "js";
+      var match             = grunt.config("jasmine_node.match") || ".";
+      var matchall          = grunt.config("jasmine_node.matchall") || false;
+      var autotest          = grunt.config("jasmine_node.autotest") || false;
+      var useHelpers        = grunt.config("jasmine_node.useHelpers") || false;
+      var forceExit         = grunt.config("jasmine_node.forceExit") || false;
+      var useCoffee         = grunt.config("jasmine_node.useCoffee") || false;
+      var captureExceptions = grunt.config("jasmine_node.captureExceptions") || false;
+      var growl             = grunt.config("jasmine_node.growl") || false;
+
+      var isVerbose         = grunt.config("jasmine_node.verbose") || true;
+      var showColors        = grunt.config("jasmine_node.colors") || true;
+
+      if (projectRoot) {
+        specFolders.push(projectRoot);
+      }
+
+      var junitreport = {
           report: false,
           savePath : "./reports/",
           useDotNotation: true,
           consolidate: true
-        },
-        growl: false
-      });
-      options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
-      if (options.projectRoot) {
-        options.specFolders.push(options.projectRoot);
-      }
-      // Tell grunt this task is asynchronous.
-      var done = this.async();
-
-      if(options.coffee){
-        options.extensions = 'js|coffee|litcoffee';
-        require('coffee-script');     
-      }
-      var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
-
+      };
+        
+      
       var onComplete = function(runner, log) {
         var exitCode;
         util.print('\n');
@@ -60,11 +56,65 @@ module.exports = function (grunt) {
         jasmine.getGlobal().jasmine.currentEnv_ = undefined;
         done(exitCode === 0);
       };
+      
+      
+      var options = {
+        match:           match,
+        matchall:        matchall,
+        specNameMatcher: specNameMatcher,
+        extensions:      extensions,
+        specFolders:     specFolders,
+        onComplete:      onComplete,
+        isVerbose:       isVerbose,
+        showColors:      showColors,
+        teamcity:        teamcity,
+        useRequireJs:    useRequireJs,
+        coffee:          useCoffee,
+        junitreport:     junitreport,
+        growl:           growl
+      };
+      
+      var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
+      options.regExpSpec = regExpSpec;
+      
+      options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
+      if (options.projectRoot) {
+        options.specFolders.push(options.projectRoot);
+      }
+      // Tell grunt this task is asynchronous.
+      var done = this.async();
 
-      if (options.useHelpers) {
-        this.filesSrc.forEach(function(path){
-          jasmine.loadHelpersInFolder(path, new RegExp(options.helperNameMatcher + "?\\.(" + options.extensions + ")$", 'i'));
+      if(options.coffee){
+        options.extensions = 'js|coffee|litcoffee';
+        require('coffee-script');     
+      }
+
+      
+      
+
+      if (captureExceptions) {
+        // Grunt will kill the process when it handles an uncaughtException, so
+        // we need to insert a new handler before the Grunt handler to print
+        // out the error stack trace.
+        var handlers = process.listeners('uncaughtException');
+        process.removeAllListeners('uncaughtException');
+        handlers.unshift(function(e) {
+          grunt.log.error('Caught unhandled exception: ' + e.toString());
+          grunt.log.error(e.stack);
         });
+        handlers.forEach(function(handler) {
+          process.on('uncaughtException', handler);
+        });
+      }
+
+      // order is preserved in node.js
+      var legacyArguments = Object.keys(options).map(function(key) {
+        return options[key];
+      });
+
+      if (useHelpers) {
+        jasmine.loadHelpersInFolder(projectRoot,
+        new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
       }
 
       var jasmineOptions = {
@@ -84,7 +134,7 @@ module.exports = function (grunt) {
       try {
         // for jasmine-node@1.0.27 individual arguments need to be passed
         // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function(key) {
+        legacyArguments = Object.keys(options).map(function(key) {
           return options[key];
         });
 
