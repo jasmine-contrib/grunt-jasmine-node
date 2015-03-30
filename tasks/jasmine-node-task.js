@@ -120,7 +120,7 @@ module.exports = function (grunt) {
       var jasmineOptions = {
         specFolders: options.specFolders,
         onComplete:   onComplete,
-        isVerbose: grunt.verbose?true:options.verbose,
+        isVerbose: grunt.option('verbose')?true:options.verbose,
         showColors: options.showColors,
         teamcity: options.teamcity,
         useRequireJs: options.useRequireJs,
