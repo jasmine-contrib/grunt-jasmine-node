@@ -43,7 +43,7 @@ module.exports = function (grunt) {
       
       var onComplete = function(runner, log) {
         var exitCode;
-        util.print('\n');
+        console.log('\n');
         if (runner.results().failedCount === 0) {
           exitCode = 0;
         } else {
