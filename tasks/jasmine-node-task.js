@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     'use strict';
-    
+
     grunt.registerMultiTask("jasmine_node", "Runs jasmine-node.", function() {
       var jasmine = require('jasmine-node');
       var util;
@@ -25,6 +25,7 @@ module.exports = function (grunt) {
       var useCoffee         = grunt.config("jasmine_node.useCoffee") || false;
       var captureExceptions = grunt.config("jasmine_node.captureExceptions") || false;
       var growl             = grunt.config("jasmine_node.growl") || false;
+      var junitreport       = grunt.config("jasmine_node.junitreport");
 
       var isVerbose         = grunt.config("jasmine_node.verbose") || true;
       var showColors        = grunt.config("jasmine_node.colors") || true;
@@ -33,14 +34,6 @@ module.exports = function (grunt) {
         specFolders.push(projectRoot);
       }
 
-      var junitreport = {
-          report: false,
-          savePath : "./reports/",
-          useDotNotation: true,
-          consolidate: true
-      };
-        
-      
       var onComplete = function(runner, log) {
         var exitCode;
         console.log('\n');
@@ -56,8 +49,8 @@ module.exports = function (grunt) {
         jasmine.getGlobal().jasmine.currentEnv_ = undefined;
         done(exitCode === 0);
       };
-      
-      
+
+
       var options = {
         match:           match,
         matchall:        matchall,
@@ -73,10 +66,10 @@ module.exports = function (grunt) {
         junitreport:     junitreport,
         growl:           growl
       };
-      
+
       var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
       options.regExpSpec = regExpSpec;
-      
+
       options.specFolders = grunt.util._.union(options.specFolders, this.filesSrc);
       if (options.projectRoot) {
         options.specFolders.push(options.projectRoot);
@@ -86,11 +79,11 @@ module.exports = function (grunt) {
 
       if(options.coffee){
         options.extensions = 'js|coffee|litcoffee';
-        require('coffee-script');     
+        require('coffee-script');
       }
 
-      
-      
+
+
 
       if (captureExceptions) {
         // Grunt will kill the process when it handles an uncaughtException, so
@@ -118,17 +111,17 @@ module.exports = function (grunt) {
       }
 
       var jasmineOptions = {
-        specFolders: options.specFolders,
-        onComplete:   onComplete,
-        isVerbose: grunt.option('verbose')?true:options.verbose,
-        showColors: options.showColors,
-        teamcity: options.teamcity,
-        useRequireJs: options.useRequireJs,
-        regExpSpec:   regExpSpec,
-        junitreport: options.jUnit,
-        includeStackTrace: options.includeStackTrace,
-        coffee: options.coffee,
-        growl: options.growl
+        specFolders:        options.specFolders,
+        onComplete:         onComplete,
+        isVerbose:          grunt.option('verbose')?true:options.verbose,
+        showColors:         options.showColors,
+        teamcity:           options.teamcity,
+        useRequireJs:       options.useRequireJs,
+        regExpSpec:         regExpSpec,
+        junitreport:        options.junitreport,
+        includeStackTrace:  options.includeStackTrace,
+        coffee:             options.coffee,
+        growl:              options.growl
       };
 
       try {
