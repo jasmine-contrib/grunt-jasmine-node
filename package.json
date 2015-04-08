@@ -1,7 +1,7 @@
 {
   "name" : "grunt-jasmine-node",
   "description" : "Grunt task for running jasmine-node",
-  "version" : "0.3.0",
+  "version" : "0.3.1",
   "homepage" : "https://github.com/jasmine-contrib/grunt-jasmine-node",
   "author" : {
     "name" : "Omar Gonzalez",
