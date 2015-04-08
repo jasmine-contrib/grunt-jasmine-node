@@ -1,3 +1,6 @@
+# 0.3.1
+- Merged PR #62 to fix junitreport hard-coded options
+
 # 0.2.1
 - multi-task configuration support added
 - coffeescript support fixed
