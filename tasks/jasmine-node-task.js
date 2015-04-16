@@ -26,6 +26,7 @@ module.exports = function (grunt) {
       var captureExceptions = grunt.config("jasmine_node.captureExceptions") || false;
       var growl             = grunt.config("jasmine_node.growl") || false;
       var junitreport       = grunt.config("jasmine_node.junitreport");
+      var output            = grunt.config("jasmine_node.output");
 
       var isVerbose         = grunt.config("jasmine_node.verbose") || true;
       var showColors        = grunt.config("jasmine_node.colors") || true;
@@ -64,6 +65,7 @@ module.exports = function (grunt) {
         useRequireJs:    useRequireJs,
         coffee:          useCoffee,
         junitreport:     junitreport,
+        output:          output,
         growl:           growl
       };
 
@@ -119,6 +121,7 @@ module.exports = function (grunt) {
         useRequireJs:       options.useRequireJs,
         regExpSpec:         regExpSpec,
         junitreport:        options.junitreport,
+        output:             options.output,
         includeStackTrace:  options.includeStackTrace,
         coffee:             options.coffee,
         growl:              options.growl
