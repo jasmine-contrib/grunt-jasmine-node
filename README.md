@@ -32,7 +32,7 @@ Help us squash them by submitting an issue that describes how you encountered it
 
 ## Release History
 
-see [GitHub Repository](/s9tpepper/grunt-jasmine-node).
+see [GitHub Repository](https://github.com/jasmine-contrib/grunt-jasmine-node/).
 
 ## License
 Copyright (c) 2012 "s9tpepper" Omar Gonzalez & contributors.
