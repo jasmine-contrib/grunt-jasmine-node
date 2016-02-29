@@ -10,29 +10,33 @@ module.exports = function (grunt) {
           util = require('sys');
       }
 
-      var projectRoot       = grunt.config("jasmine_node.projectRoot") || ".";
-      var specFolders       = grunt.config("jasmine_node.specFolders") || [];
-      var source            = grunt.config("jasmine_node.source") || "src";
-      var specNameMatcher   = grunt.config("jasmine_node.specNameMatcher") || "spec";
-      var teamcity          = grunt.config("jasmine_node.teamcity") || false;
-      var useRequireJs      = grunt.config("jasmine_node.requirejs") || false;
-      var extensions        = grunt.config("jasmine_node.extensions") || "js";
-      var match             = grunt.config("jasmine_node.match") || ".";
-      var matchall          = grunt.config("jasmine_node.matchall") || false;
-      var autotest          = grunt.config("jasmine_node.autotest") || false;
-      var useHelpers        = grunt.config("jasmine_node.useHelpers") || false;
-      var forceExit         = grunt.config("jasmine_node.forceExit") || false;
-      var useCoffee         = grunt.config("jasmine_node.useCoffee") || false;
-      var captureExceptions = grunt.config("jasmine_node.captureExceptions") || false;
-      var growl             = grunt.config("jasmine_node.growl") || false;
-      var junitreport       = grunt.config("jasmine_node.junitreport");
+      var gruntOptions = this.options({
+        projectRoot: ".",
+        specFolders: [],
+        source: "src",
+        specNameMatcher: "spec",
+        teamcity: false,
+        useRequireJs: false,
+        extensions: "js",
+        match: ".",
+        matchall: false,
+        autotest: false,
+        useHelpers: false,
+        forceExit: false,
+        useCoffee: false,
+        captureExceptions: false,
+        growl: false,
+        junitreport: {},
 
-      var isVerbose         = grunt.config("jasmine_node.verbose") || true;
-      var showColors        = grunt.config("jasmine_node.colors") || true;
+        includeStackTrace: false,
+        isVerbose: false,
+        showColors: false
+      });
 
-      if (projectRoot) {
-        specFolders.push(projectRoot);
-      }
+      // if (gruntOptions.projectRoot) {
+        // gruntOptions.specFolders.push(gruntOptions.projectRoot);
+      // }
+      
 
       var onComplete = function(runner, log) {
         var exitCode;
@@ -50,21 +54,21 @@ module.exports = function (grunt) {
         done(exitCode === 0);
       };
 
-
       var options = {
-        match:           match,
-        matchall:        matchall,
-        specNameMatcher: specNameMatcher,
-        extensions:      extensions,
-        specFolders:     specFolders,
-        onComplete:      onComplete,
-        isVerbose:       isVerbose,
-        showColors:      showColors,
-        teamcity:        teamcity,
-        useRequireJs:    useRequireJs,
-        coffee:          useCoffee,
-        junitreport:     junitreport,
-        growl:           growl
+        match:                  gruntOptions.match,
+        matchall:               gruntOptions.matchall,
+        specNameMatcher:        gruntOptions.specNameMatcher,
+        extensions:             gruntOptions.extensions,
+        specFolders:            gruntOptions.specFolders,
+        onComplete:             gruntOptions.onComplete,
+        isVerbose:              gruntOptions.isVerbose,
+        showColors:             gruntOptions.showColors,
+        teamcity:               gruntOptions.teamcity,
+        useRequireJs:           gruntOptions.useRequireJs,
+        coffee:                 gruntOptions.useCoffee,
+        junitreport:            gruntOptions.junitreport,
+        growl:                  gruntOptions.growl,
+        includeStackTrace:      gruntOptions.includeStackTrace
       };
 
       var regExpSpec = new RegExp(options.match + (options.matchall ? "" : options.specNameMatcher + "\\.") + "(" + options.extensions + ")$", 'i');
@@ -85,7 +89,7 @@ module.exports = function (grunt) {
 
 
 
-      if (captureExceptions) {
+      if (gruntOptions.captureExceptions) {
         // Grunt will kill the process when it handles an uncaughtException, so
         // we need to insert a new handler before the Grunt handler to print
         // out the error stack trace.
@@ -105,15 +109,15 @@ module.exports = function (grunt) {
         return options[key];
       });
 
-      if (useHelpers) {
-        jasmine.loadHelpersInFolder(projectRoot,
-        new RegExp("helpers?\\.(" + extensions + ")$", 'i'));
+      if (gruntOptions.useHelpers) {
+        jasmine.loadHelpersInFolder(gruntOptions.projectRoot,
+          new RegExp("helpers?\\.(" + gruntOptions.extensions + ")$", 'i'));
       }
 
       var jasmineOptions = {
         specFolders:        options.specFolders,
         onComplete:         onComplete,
-        isVerbose:          grunt.option('verbose')?true:options.verbose,
+        isVerbose:          grunt.option('verbose')?true:options.isVerbose,
         showColors:         options.showColors,
         teamcity:           options.teamcity,
         useRequireJs:       options.useRequireJs,
